@@ -1,7 +1,30 @@
 // Função chamada no botão de submissão
-function submit() {
-    
+function addNewUser () {
+    const name = document.getElementById('name').value;
+    const surname = document.getElementById('surname').value;
+    const idToBeEdited = document.getElementById('idToBeEdited').value;
+
+    if(idToBeEdited === '') {
+        // Caso não haja id para editar, deve ser adicionado um novo utilizador à base de dados
+
+    } else {
+        // Caso haja um id para editar, deve ser editado esse utilizador com os novos dados do formulário
+
+    }
+
 };
+
+// Função usada para apagar o utilizador com o id introduzido
+function deleteUser() {
+    const idToBeDeleted = document.getElementById('idToBeDeleted').value;
+
+}
+
+// Função usada para mostrar na consola a lista de utilizadores ordenada
+function getOrderedUsers() {
+    let users = [];
+    console.log('Utilizadores ordenados: ', users);
+}
 
 // Função chamada para correr no loading da página html
 function onLoad() {
@@ -21,8 +44,7 @@ function onLoad() {
             listItem.setAttribute('class', 'list-group-item');
 
             // Texto a ser visualizado na lista
-            const listItemText = 'Utilizador: ' + userObject.name +' ' + userObject.surname;
-            console.log(listItemText);
+            const listItemText = 'Utilizador com o id ' + doc.id + ': ' + userObject.name +' ' + userObject.surname;
 
             // Acrescento do texto a apresentar na lista
             listItem.appendChild(document.createTextNode(listItemText));

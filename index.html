@@ -23,13 +23,29 @@
     <div class="container mt50">
         <div class="row">
             <div class="col">
-                <input type="text" class="form-control" name="name" placeholder="Nome">
+                <input type="text" class="form-control" id="idToBeEdited" placeholder="Id a Alterar">
             </div>
             <div class="col">
-                <input type="text" class="form-control" name="surname" placeholder="Apelido">
+                <input type="text" class="form-control" id="name" placeholder="Nome">
             </div>
-            <button onclick="submit()" class="btn btn-primary">Adicionar Pessoa</button>
+            <div class="col">
+                <input type="text" class="form-control" id="surname" placeholder="Apelido">
+            </div>
+            <button onclick="addNewUser()" class="btn btn-primary">Adicionar Utilizador</button>
         </div>
+    </div>
+
+    <div class="container mt10">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" id="idToBeDeleted" placeholder="Id do Utilizador">
+            </div>
+            <button onclick="deleteUser()" class="btn btn-danger">Remover Utilizador</button>
+        </div>
+    </div>
+
+    <div class="container mt10">
+        <button onclick="getOrderedUsers()" class="btn btn-light w-100">Ordenar Utilizadores</button>
     </div>
 
     <div class="container mt10">
