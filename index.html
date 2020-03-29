@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firestore Sample App</title>
+    <!-- Script para importar as bibliotecas relativas às aplicações Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+    
+    <!-- Script para importar as bibliotecas relativas à funcionalidade Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-firestore.js"></script>
+    
+    <!-- Link para importar Bootstrap (apenas para fins estéticos da página) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+     <!-- Link para custom CSS feito num ficheiro (apenas para fins estéticos da página) -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <h3 class="text-center mt10">Firestore Sample App</h3>
+    <div class="container mt50">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" name="name" placeholder="Nome">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="surname" placeholder="Apelido">
+            </div>
+            <button onclick="submit()" class="btn btn-primary">Adicionar Pessoa</button>
+        </div>
+    </div>
+
+    <div class="container mt10">
+        <ul class="list-group" id="list">
+            <!-- Sítio onde serão adicionados os users através de Javascript -->
+        </ul>
+    </div>
+
+    <!-- Script obtido na consola do Firebase - A SER SUBSTITUIDO PELO VOSSO -->
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "",
+          authDomain: "",
+          databaseURL: "",
+          projectId: "",
+          storageBucket: "",
+          messagingSenderId: "",
+          appId: ""
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        /**
+         * Esta linha foi adicionada criar uma instância 
+         * (de acordo com as configs) 
+         * para interagir com a base de dados
+         */
+        const db = firebase.firestore();
+    </script>
+
+     <!-- Script para o ficheiro javascript que correrá com o html -->
+     <script src="app.js"></script>
+
+</body>
+</html>
