@@ -31,8 +31,7 @@
             <div class="col">
                 <input type="text" class="form-control" id="surname" placeholder="Apelido">
             </div>
-            <button onclick="addNewUser()" class="btn btn-primary">Adicionar Utilizador</button>
-        </div>
+            <button onclick="addOrEditUser()" class="btn btn-primary">Adicionar Utilizador</button>
     </div>
 
     <div class="container mt10">
@@ -41,6 +40,11 @@
                 <input type="text" class="form-control" id="idToBeDeleted" placeholder="Id do Utilizador">
             </div>
             <button onclick="deleteUser()" class="btn btn-danger">Remover Utilizador</button>
+            <div class="col">
+                <input type="text" class="form-control" id="surnameQuery" placeholder="Apelido">
+            </div>
+            <button onclick="getUsersBySurname()" class="btn btn-primary">Procurar por Apelido</button>
+        </div>
         </div>
     </div>
 
@@ -58,13 +62,13 @@
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
-          apiKey: "",
-          authDomain: "",
-          databaseURL: "",
-          projectId: "",
-          storageBucket: "",
-          messagingSenderId: "",
-          appId: ""
+            apiKey: "AIzaSyD3eWC2x4BX51EMgGuWOxF01APbKwQPIOA",
+            authDomain: "sgbd-ficha-4.firebaseapp.com",
+            databaseURL: "https://sgbd-ficha-4.firebaseio.com",
+            projectId: "sgbd-ficha-4",
+            storageBucket: "sgbd-ficha-4.appspot.com",
+            messagingSenderId: "271050992431",
+            appId: "1:271050992431:web:8ab2f8cb109a751db2cfda"
         };
         
         // Initialize Firebase
