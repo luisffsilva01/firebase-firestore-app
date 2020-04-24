@@ -16,6 +16,14 @@
     
      <!-- Link para custom CSS feito num ficheiro (apenas para fins estéticos da página) -->
     <link rel="stylesheet" href="index.css">
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -53,10 +61,16 @@
     </div>
 
     <div class="container mt10">
+        <input type="text" id="userID">
+        <input type="file" style="margin-top: 10px; margin-bottom: 10px;" id="fileButton" accept="image/jpeg">
+        <button onclick="deleteFile()">Apagar foto</button>
+        <input type="text" id="path">
+        <button onclick="listFiles()">Listar Ficehiros</button>
         <ul class="list-group" id="list">
             <!-- Sítio onde serão adicionados os users através de Javascript -->
         </ul>
     </div>
+    
 
     <!-- Script obtido na consola do Firebase - A SER SUBSTITUIDO PELO VOSSO -->
     <script>
@@ -80,6 +94,7 @@
          * para interagir com a base de dados
          */
         const db = firebase.firestore();
+        const storage = firebase.storage();
     </script>
 
      <!-- Script para o ficheiro javascript que correrá com o html -->

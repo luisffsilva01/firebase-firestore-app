@@ -110,6 +110,7 @@ function onLoad() {
 
                 // Acrescentar o listItem à lista
                 listElement.appendChild(listItem);
+                
             }
             if (change.type === "modified") {
                 document.getElementById(change.doc.id).innerHTML = 'Utilizador com o id ' + change.doc.id + ': ' + doc.name +' ' + doc.surname;
@@ -168,6 +169,75 @@ function logChanges() {
         });
     });
 }
+
+
+// Upload Image
+
+ const upload = document.getElementById('fileButton');
+
+ upload.addEventListener('change', (e) => {
+    userID = document.getElementById("userID").value;
+
+     var file = e.target.files[0];
+
+     var ref = storage.ref('users/' + userID + ".jpg");
+
+     var task = ref.put(file);
+
+     task.on('state_changed',
+        function progress(snapshot) {
+            console.log('indo: ', (snapshot.bytesTranfered / snapshot.totalBytes) * 100 + '%');
+        },
+        function error(err){
+
+        },
+        
+        function complete() {
+            console.log('done');
+            storage.ref('image/' + file.name).getDownloadURL().then(function(url){
+                image.src = url;
+                console.log(url);
+                
+            })
+            
+        })
+
+ })
+
+ function deleteFile(){
+    var storageRef = storage.ref();
+    const userID = document.getElementById("userID").value;
+    var desertRef = storageRef.child("users/" + userID + ".jpg");
+
+    // Delete the file
+    desertRef.delete().then(function() {
+      // File deleted successfully
+    }).catch(function(error) {
+      // Uh-oh, an error occurred!
+    });
+ }
+
+ function listFiles(){
+    const path = document.getElementById("path").value;
+     const storageRef = storage.ref();
+    // Create a reference under which you want to list
+    var listRef = storageRef.child(path);
+
+    // Find all the prefixes and items.
+    listRef.listAll().then(function(res) {
+    res.prefixes.forEach(function(folderRef) {
+        // All the prefixes under listRef.
+        // You may call listAll() recursively on them.
+    });
+    res.items.forEach(function(itemRef) {
+        // All the items under listRef.
+        console.log(itemRef.location.path);
+        
+    });
+    }).catch(function(error) {
+    // Uh-oh, an error occurred!
+    });
+ }
 
 // Chamada da função onLoad
 onLoad();
