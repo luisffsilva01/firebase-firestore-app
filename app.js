@@ -9,7 +9,8 @@ function addOrEditUser () {
         // Caso não haja id para editar, deve ser adicionado um novo utilizador à base de dados
         db.collection("users").doc().set({
             name: name,
-            surname: surname
+            surname: surname,
+            urlImage: "https://firebasestorage.googleapis.com/v0/b/sgbd-ficha-4.appspot.com/o/users%2Fperson.png?alt=media&token=cdb3b48e-0b27-4548-a24e-fa1d00e5d6b1"
         })
         .then(function() {
             console.log("Document successfully written!");
@@ -96,7 +97,7 @@ function onLoad() {
         snapshot.docChanges().forEach(function(change) {
             const doc = change.doc.data(); 
             if (change.type === "added") {
-                // Criação da instância de elemento list item (li) para colocar na lista
+               /* // Criação da instância de elemento list item (li) para colocar na lista
                 const listItem = document.createElement("li");
                 // Acrescento da class 'list-group-item' do Bootstrap (apenas estético)
                 listItem.setAttribute('class', 'list-group-item');
@@ -106,14 +107,17 @@ function onLoad() {
                 const listItemText = 'Utilizador com o id ' + change.doc.id + ': ' + doc.name +' ' + doc.surname;
 
                 // Acrescento do texto a apresentar na lista
+                
                 listItem.appendChild(document.createTextNode(listItemText));
+                
 
                 // Acrescentar o listItem à lista
-                listElement.appendChild(listItem);
-                
+                listElement.appendChild(listItem);  */
+            
+                document.getElementById("list").innerHTML += '<li class="list-group-item" id=' + change.doc.id + '><img src=' + doc.urlImage +' height="42" width="42">Utilizador com o id ' + change.doc.id + ': ' + doc.name + ' ' + doc.surname + '</li>';
             }
             if (change.type === "modified") {
-                document.getElementById(change.doc.id).innerHTML = 'Utilizador com o id ' + change.doc.id + ': ' + doc.name +' ' + doc.surname;
+                document.getElementById(change.doc.id).innerHTML = '<img src=' + doc.urlImage +' height="42" width="42">Utilizador com o id ' + change.doc.id + ': ' + doc.name + ' ' + doc.surname +'';
             }
             if (change.type === "removed") {
                 document.getElementById(change.doc.id).remove();
@@ -187,6 +191,8 @@ function logChanges() {
      task.on('state_changed',
         function progress(snapshot) {
             console.log('indo: ', (snapshot.bytesTranfered / snapshot.totalBytes) * 100 + '%');
+            console.log("Test Function");
+            
         },
         function error(err){
 
@@ -194,13 +200,24 @@ function logChanges() {
         
         function complete() {
             console.log('done');
-            storage.ref('image/' + file.name).getDownloadURL().then(function(url){
-                image.src = url;
-                console.log(url);
-                
-            })
             
-        })
+        }),
+
+        task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
+            db.collection("users").doc(userID).update({
+                urlImage: downloadURL
+            })
+            .then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
+          });
+
+
+            
 
  })
 
