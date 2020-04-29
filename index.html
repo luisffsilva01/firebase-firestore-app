@@ -41,8 +41,10 @@
             <button onclick="registo()" id="btn-registo" class="btn btn-secondary">Registar</button>
             <button onclick="logout()" id="btn-logout" style="display: none;" class="btn btn-warning">Logout</button>
         </div>
+        <h3 class="text-center text-danger mt10" id="textInfo">Inicie Sessão ou Registe-se</h3>
         </div>
     </div>
+    <div id="content">
     <div class="container mt50">
         <div class="row">
             <div class="col">
@@ -53,6 +55,9 @@
             </div>
             <div class="col">
                 <input type="text" class="form-control" id="surname" placeholder="Apelido">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="phone" placeholder="Número">
             </div>
             <button onclick="addOrEditUser()" class="btn btn-primary">Adicionar Utilizador</button>
     </div>
@@ -80,12 +85,12 @@
         <input type="file" style="margin-top: 10px; margin-bottom: 10px;" id="fileButton" accept="image/jpeg">
         <button onclick="deleteFile()">Apagar foto</button>
         <input type="text" id="path">
-        <button onclick="listFiles()">Listar Ficehiros</button>
+        <!-- <button onclick="listFiles()">Listar Ficehiros</button> -->
         <ul class="list-group" id="list">
             <!-- Sítio onde serão adicionados os users através de Javascript -->
         </ul>
     </div>
-    
+</div>
 
     <!-- Script obtido na consola do Firebase - A SER SUBSTITUIDO PELO VOSSO -->
     <script>

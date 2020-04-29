@@ -1,15 +1,57 @@
+let userMail
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
+      console.log(email);
+      userMail = email;
+      console.log(userMail);
+      document.getElementById("content").style= "display: block;";
+      onLoad();
+      
+      
+      // ...
+        document.getElementById("btn-login").style = "display: none;"
+        document.getElementById("btn-registo").style = "display: none;"
+        document.getElementById("btn-logout").style = "display: block;"
+        document.getElementById("textInfo").style = "display: none;"
+        document.getElementById("email").value = ""
+        document.getElementById("password").value = ""
+
+    } else {
+      // User is signed out.
+      // ...
+        document.getElementById("btn-login").style = "display: block;"
+        document.getElementById("btn-registo").style = "display: block;"
+        document.getElementById("btn-logout").style = "display: none;"
+        document.getElementById("textInfo").style = "display: block;"
+        document.getElementById("email").value = ""
+        document.getElementById("password").value = ""
+        document.getElementById("content").style= "display: none;"
+    }
+  });
+
 // Função chamada no botão de submissão
 function addOrEditUser () {
     const name = document.getElementById('name').value;
     const surname = document.getElementById('surname').value;
+    const phone = document.getElementById('phone').value;
     const idToBeEdited = document.getElementById('idToBeEdited').value;
 
 
     if(idToBeEdited === '') {
         // Caso não haja id para editar, deve ser adicionado um novo utilizador à base de dados
-        db.collection("users").doc().set({
+        db.collection(userMail).doc().set({
             name: name,
             surname: surname,
+            phone: phone,
             urlImage: "https://firebasestorage.googleapis.com/v0/b/sgbd-ficha-4.appspot.com/o/users%2Fperson.png?alt=media&token=cdb3b48e-0b27-4548-a24e-fa1d00e5d6b1"
         })
         .then(function() {
@@ -21,9 +63,10 @@ function addOrEditUser () {
 
     } else {
         // Caso haja um id para editar, deve ser editado esse utilizador com os novos dados do formulário
-        db.collection("users").doc(idToBeEdited).set({
+        db.collection(userMail).doc(idToBeEdited).set({
             name: name,
-            surname: surname
+            surname: surname,
+            phone: phone
         })
         .then(function() {
             console.log("Document successfully written!");
@@ -40,7 +83,7 @@ function deleteUser() {
     const idToBeDeleted = document.getElementById('idToBeDeleted').value;
     const listElement = document.getElementById('list');
 
-    db.collection("users").doc(idToBeDeleted).delete().then(function() {
+    db.collection(userMail).doc(idToBeDeleted).delete().then(function() {
         console.log("Document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);
@@ -51,7 +94,7 @@ function deleteUser() {
 // Função usada para mostrar na consola a lista de utilizadores ordenada
 function getOrderedUsers() {
     let users = []
-    db.collection('users').orderBy("surname", "asc").get().then(snapshot => {
+    db.collection(userMail).orderBy("surname", "asc").get().then(snapshot => {
         // Ciclo que percorre cada user para o adicionar à lista
         snapshot.forEach(doc => {
             // Criação de um objeto que armazena os dados de cada documento
@@ -93,7 +136,7 @@ function onLoad() {
         });
     });*/
 
-    db.collection("users").onSnapshot(function(snapshot) {
+    db.collection(userMail).onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             const doc = change.doc.data(); 
             if (change.type === "added") {
@@ -114,10 +157,10 @@ function onLoad() {
                 // Acrescentar o listItem à lista
                 listElement.appendChild(listItem);  */
             
-                document.getElementById("list").innerHTML += '<li class="list-group-item" id=' + change.doc.id + '><img src=' + doc.urlImage +' height="42" width="42">Utilizador com o id ' + change.doc.id + ': ' + doc.name + ' ' + doc.surname + '</li>';
+                document.getElementById("list").innerHTML += '<li class="list-group-item" id=' + change.doc.id + '><img src=' + doc.urlImage +' height="42" width="42">' + doc.name + ' ' + doc.surname + ' <a href="tel:'+ doc.phone +'">'+ doc.phone +'</a> (id - ' + change.doc.id + ')</li>';
             }
             if (change.type === "modified") {
-                document.getElementById(change.doc.id).innerHTML = '<img src=' + doc.urlImage +' height="42" width="42">Utilizador com o id ' + change.doc.id + ': ' + doc.name + ' ' + doc.surname +'';
+                document.getElementById(change.doc.id).innerHTML = '<img src=' + doc.urlImage +' height="42" width="42">' + doc.name + ' ' + doc.surname + ' <a href="tel:'+ doc.phone +'">'+ doc.phone +'</a> (id - ' + change.doc.id + ')';
             }
             if (change.type === "removed") {
                 document.getElementById(change.doc.id).remove();
@@ -134,7 +177,7 @@ function getUsersBySurname() {
     
     // Pedido GET à base de dados que retorna todos os users
     listElement.innerHTML = ""
-    db.collection('users').where("surname", "==", surnameQ).get().then(snapshot => {
+    db.collection(userMail).where("surname", "==", surnameQ).get().then(snapshot => {
         // Ciclo que percorre cada user para o adicionar à lista
         snapshot.forEach(doc => {
             // Criação de um objeto que armazena os dados de cada documento
@@ -158,7 +201,7 @@ function getUsersBySurname() {
 }
 
 function logChanges() {
-    db.collection("users")
+    db.collection(userMail)
     .onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             if (change.type === "added") {
@@ -205,7 +248,7 @@ function logChanges() {
 
         task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
             console.log('File available at', downloadURL);
-            db.collection("users").doc(userID).update({
+            db.collection(userMail).doc(userID).update({
                 urlImage: downloadURL
             })
             .then(function() {
@@ -231,6 +274,16 @@ function logChanges() {
       // File deleted successfully
     }).catch(function(error) {
       // Uh-oh, an error occurred!
+    });
+
+    db.collection(userMail).doc(userID).update({
+        urlImage: "https://firebasestorage.googleapis.com/v0/b/sgbd-ficha-4.appspot.com/o/users%2Fperson.png?alt=media&token=cdb3b48e-0b27-4548-a24e-fa1d00e5d6b1"
+    })
+    .then(function() {
+        console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
     });
  }
 
@@ -261,34 +314,13 @@ function logChanges() {
     const password = document.getElementById("password").value;
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(error) {
-        console.log("Login com sucesso");
-        document.getElementById("btn-login").style = "display: none;"
-        document.getElementById("btn-registo").style = "display: none;"
-        document.getElementById("btn-logout").style = "display: block;"
-
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // User is signed in.
-              var displayName = user.displayName;
-              var email = user.email;
-              var emailVerified = user.emailVerified;
-              var photoURL = user.photoURL;
-              var isAnonymous = user.isAnonymous;
-              var uid = user.uid;
-              var providerData = user.providerData;
-              // ...
-            } else {
-              // User is signed out.
-              // ...
-            }
-          });
-        
-    }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
+        console.log("Login com sucesso");       
+        }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ...
+        });
  }
 
  function registo(){
@@ -301,14 +333,16 @@ function logChanges() {
             var errorMessage = error.message;
             // ...
             
-            var user = firebase.auth().currentUser;
+            /* var user = firebase.auth().currentUser;
             user.sendEmailVerification().then(function() {
             // Email sent.
             }).catch(function(error) {
             // An error happened.
                 console.log(error);
             
-            });
+            }); */
+
+            
         });
         
     }
@@ -318,13 +352,11 @@ function logChanges() {
  function logout(){
     firebase.auth().signOut().then(function() {
         // Sign-out successful.
-        document.getElementById("btn-login").style = "display: block;"
-        document.getElementById("btn-registo").style = "display: block;"
-        document.getElementById("btn-logout").style = "display: none;"
+        document.getElementById("list").innerHTML="";
       }).catch(function(error) {
         // An error happened.
       });
  }
 // Chamada da função onLoad
-onLoad();
+
 logChanges();
