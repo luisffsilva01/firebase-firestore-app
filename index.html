@@ -24,10 +24,25 @@
   <!-- Add Firebase products that you want to use -->
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-storage.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
 </head>
 <body>
 
     <h3 class="text-center mt10">Firestore Sample App</h3>
+    <div class="container mt10">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" id="email" placeholder="Email">
+            </div>
+            <div class="col">
+                <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <button onclick="login()" id="btn-login" class="btn btn-primary">Login</button>
+            <button onclick="registo()" id="btn-registo" class="btn btn-secondary">Registar</button>
+            <button onclick="logout()" id="btn-logout" style="display: none;" class="btn btn-warning">Logout</button>
+        </div>
+        </div>
+    </div>
     <div class="container mt50">
         <div class="row">
             <div class="col">
@@ -95,6 +110,7 @@
          */
         const db = firebase.firestore();
         const storage = firebase.storage();
+        const auth = firebase.auth();
     </script>
 
      <!-- Script para o ficheiro javascript que correrá com o html -->
